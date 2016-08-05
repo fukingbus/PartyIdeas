@@ -5,4 +5,17 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="official_meetup">Official Meetup</string>
+    <string name="custom_schedule">Public Meetup</string>
+    <string name="news">News Feed</string>
+    <string name="favourite">Favourite</string>
+    <string name="history">Browse History</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="time">Time:</string>
+    <string name="venue">Venue:</string>
+    <string name="rsvp">RSVP:</string>
+    <string name="available">Available:</string>
+    <string name="address">Address:</string>
 </resources>
