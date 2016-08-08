@@ -1,5 +1,6 @@
 package com.partyideas.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
@@ -8,16 +9,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.partyideas.Fragment.LoginFrag;
 import com.partyideas.Fragment.NewsFrag;
 import com.partyideas.Fragment.OfficialMeetupFrag;
+import com.partyideas.Fragment.RegisterFrag;
 import com.partyideas.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    final int REQ_GOOGLE_SIGNIN = 8000; // google sign in request code
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,10 +95,31 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransact(newsfrag);
                 setTitle(getResources().getString(R.string.app_name));
                 break;
+            case R.id.nav_account:
+                LoginFrag loginFrag = new LoginFrag();
+                fragmentTransact(loginFrag);
+                setTitle(item.getTitle());
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == REQ_GOOGLE_SIGNIN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            LoginFrag frag = (LoginFrag) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+            frag.onGoogleLoginCompleteHandler(result);
+        }
+    }
+    public void toggleRegister(Bundle args){
+        RegisterFrag frag = new RegisterFrag();
+        frag.setArguments(args);
+        fragmentTransact(frag);
     }
 }

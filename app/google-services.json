@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "95461687854",
+    "project_id": "my-project-1470356328804"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95461687854:android:07374e035d10c5f2",
+        "android_client_info": {
+          "package_name": "com.partyideas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "95461687854-len2prph17apbj5lj6g5412ce8lihn9c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.partyideas",
+            "certificate_hash": "6A63E1CBA4CC7F6EA71A8EBBE91D3C75084153BB"
+          }
+        },
+        {
+          "client_id": "95461687854-tks4tc5rnqn4ia27gsrjd4rt1g3sapk5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7HmY9rs2AjAKY76fxNqHBRnzaan5iBCA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

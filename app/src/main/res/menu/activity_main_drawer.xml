@@ -20,6 +20,10 @@
     <item android:title="Actions">
         <menu>
             <item
+                android:id="@+id/nav_account"
+                android:icon="@mipmap/ic_user"
+                android:title="@string/account" />
+            <item
                 android:id="@+id/nav_favourite"
                 android:icon="@mipmap/ic_star"
                 android:title="@string/favourite" />
