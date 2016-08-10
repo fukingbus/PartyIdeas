@@ -30,4 +30,17 @@
     <string name="no_acc">I don\'t have an account</string>
     <string name="register">Register</string>
     <string name="register_preset">Almost done!</string>
+    <string name="your_activity">Your Activity</string>
+    <string name="logout">Log out</string>
+    <string name="basic_info">Basic information</string>
+    <string name="title">Title:</string>
+    <string name="description">Description:</string>
+    <string name="detailed_info">Detailed information</string>
+    <string name="date">Date:</string>
+    <string name="unset">Touch to set</string>
+    <string name="location">Location:</string>
+    <string name="duration">Duration:</string>
+    <string name="confirm">Confirm</string>
+    <string name="slot_limit">Slot:</string>
+    <string name="you_must_log_in_first">You must login first</string>
 </resources>

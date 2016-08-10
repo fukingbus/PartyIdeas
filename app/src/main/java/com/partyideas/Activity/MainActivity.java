@@ -1,6 +1,7 @@
 package com.partyideas.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
@@ -15,7 +16,10 @@ import android.view.MenuItem;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.partyideas.Fragment.AccountFrag;
+import com.partyideas.Fragment.CustomMeetupFrag;
 import com.partyideas.Fragment.LoginFrag;
+import com.partyideas.Fragment.NewPublicMeetupFrag;
 import com.partyideas.Fragment.NewsFrag;
 import com.partyideas.Fragment.OfficialMeetupFrag;
 import com.partyideas.Fragment.RegisterFrag;
@@ -67,12 +71,6 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -96,8 +94,19 @@ public class MainActivity extends AppCompatActivity
                 setTitle(getResources().getString(R.string.app_name));
                 break;
             case R.id.nav_account:
-                LoginFrag loginFrag = new LoginFrag();
-                fragmentTransact(loginFrag);
+                SharedPreferences spf = getSharedPreferences("account",MODE_PRIVATE);
+                boolean isLoggedIn = spf.getBoolean("status",false);
+                Fragment frag;
+                if(isLoggedIn)
+                    frag = new AccountFrag();
+                else
+                    frag = new LoginFrag();
+                fragmentTransact(frag);
+                setTitle(item.getTitle());
+                break;
+            case R.id.nav_cust_schedule:
+                CustomMeetupFrag cmFrag = new CustomMeetupFrag();
+                fragmentTransact(cmFrag);
                 setTitle(item.getTitle());
                 break;
         }
@@ -120,6 +129,22 @@ public class MainActivity extends AppCompatActivity
     public void toggleRegister(Bundle args){
         RegisterFrag frag = new RegisterFrag();
         frag.setArguments(args);
+        fragmentTransact(frag);
+    }
+    public void toggleLogin(){
+        LoginFrag frag = new LoginFrag();
+        fragmentTransact(frag);
+    }
+    public void toggleAccount(){
+        AccountFrag frag = new AccountFrag();
+        fragmentTransact(frag);
+    }
+    public void togglePublicMeetup(){
+        CustomMeetupFrag cmFrag = new CustomMeetupFrag();
+        fragmentTransact(cmFrag);
+    }
+    public void toggleCreatePublicMeetup(){
+        NewPublicMeetupFrag frag = new NewPublicMeetupFrag();
         fragmentTransact(frag);
     }
 }

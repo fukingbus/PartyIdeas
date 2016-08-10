@@ -1,0 +1,120 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.partyideas.Fragment.AccountFrag"
+    android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/material_grey_300">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="96dp"
+                android:id="@+id/imageView4"
+                android:src="@mipmap/ic_user"
+                android:layout_margin="16dp"
+                android:adjustViewBounds="false" />
+        </FrameLayout>
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/material_grey_600"
+            android:layout_weight="0" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/username"
+                android:layout_gravity="center_horizontal"
+                android:padding="16dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/material_grey_600"
+                android:layout_weight="0" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="foo@bar.com"
+                android:id="@+id/email"
+                android:layout_gravity="center_horizontal"
+                android:padding="8dp"
+                android:gravity="left|center" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/material_grey_600"
+                android:layout_weight="0" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/accType"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:gravity="left|center"
+                    android:text="Developer" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/textView7"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="left|center"
+                    android:text="@string/account"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/accType"
+                    android:layout_toEndOf="@+id/accType"
+                    android:paddingTop="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="8dp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/material_grey_600"
+        android:layout_weight="0" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/your_activity"
+        android:id="@+id/textView9"
+        android:layout_gravity="center_horizontal"
+        android:padding="16dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/material_grey_50" />
+</LinearLayout>

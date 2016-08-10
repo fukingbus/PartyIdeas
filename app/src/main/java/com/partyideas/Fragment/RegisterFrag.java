@@ -1,6 +1,8 @@
 package com.partyideas.Fragment;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,6 +16,8 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.partyideas.Activity.MainActivity;
+import com.partyideas.Adapter.Utils;
 import com.partyideas.R;
 
 import org.json.JSONObject;
@@ -26,6 +30,7 @@ public class RegisterFrag extends Fragment {
     private boolean isHavingPreset = false;
     private String presetEmail;
     private String presetName;
+    private String presetToken;
 
     private EditText usernameField;
     private EditText passwordField;
@@ -46,6 +51,7 @@ public class RegisterFrag extends Fragment {
             Bundle arg = getArguments();
             presetEmail = arg.getString("email");
             presetName = arg.getString("name");
+            presetToken = arg.getString("gid");
         }
         View root = inflater.inflate(R.layout.fragment_register, container, false);
         usernameField = (EditText)root.findViewById(R.id.usernameField);
@@ -71,6 +77,10 @@ public class RegisterFrag extends Fragment {
         if(isHavingPreset){
             usernameField.setText(presetEmail.substring(0,presetEmail.indexOf("@")));
             emailField.setText(presetEmail);
+            passwordField.setText(presetToken);
+            passwordField.setEnabled(false);
+            usernameField.setEnabled(false);
+            emailField.setEnabled(false);
         }
         return root;
     }
@@ -78,9 +88,14 @@ public class RegisterFrag extends Fragment {
         return str.matches("[A-Za-z0-9]+");
     }
     private void processRegister(){
+        final String originPass = passwordField.getText().toString();
+        final String loginIdentifier = isHavingPreset ? emailField.getText().toString() : usernameField.getText().toString();
         JsonObject json = new JsonObject();
         json.addProperty("username", usernameField.getText().toString());
-        json.addProperty("pass",passwordField.getText().toString());
+        if(isHavingPreset)
+            json.addProperty("gid",passwordField.getText().toString());
+        else
+            json.addProperty("pass",passwordField.getText().toString());
         json.addProperty("email",emailField.getText().toString());
         json.addProperty("phone",phoneField.getText().toString());
         json.addProperty("accType",isHavingPreset ? "google" : "general");
@@ -96,7 +111,7 @@ public class RegisterFrag extends Fragment {
                             JSONObject res = new JSONObject(result.toString());
                             boolean status = res.getBoolean("status");
                             if(status){
-                                Log.e("Login","successful");
+                                ((MainActivity)getActivity()).toggleLogin();
                             }
                             else{
                                 JSONObject err = res.getJSONObject("err");
