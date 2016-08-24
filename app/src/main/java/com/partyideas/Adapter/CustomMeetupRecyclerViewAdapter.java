@@ -20,6 +20,8 @@ import java.util.Date;
 public class CustomMeetupRecyclerViewAdapter extends RecyclerView.Adapter<CustomMeetupRecyclerViewAdapter.ViewHolder>  {
 
     ArrayList<CustomEventResponseObject> dataset;
+
+    public CMRecyclerViewListener cmrListener;
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView titleView;
@@ -27,6 +29,7 @@ public class CustomMeetupRecyclerViewAdapter extends RecyclerView.Adapter<Custom
         public TextView rsvpView;
         public TextView rsvpLimitView;
         public TextView details;
+        public TextView statusView;
 
         public ViewHolder(View v) {
             super(v);
@@ -35,11 +38,13 @@ public class CustomMeetupRecyclerViewAdapter extends RecyclerView.Adapter<Custom
             rsvpView = (TextView)v.findViewById(R.id.rsvp);
             rsvpLimitView = (TextView)v.findViewById(R.id.avaspot);
             details = (TextView)v.findViewById(R.id.details);
+            statusView = (TextView)v.findViewById(R.id.statusTxt);
         }
     }
 
-    public CustomMeetupRecyclerViewAdapter(ArrayList<CustomEventResponseObject> dataset){
+    public CustomMeetupRecyclerViewAdapter(ArrayList<CustomEventResponseObject> dataset,CMRecyclerViewListener listener){
         this.dataset = dataset;
+        this.cmrListener = listener;
     }
 
     @Override
@@ -57,6 +62,13 @@ public class CustomMeetupRecyclerViewAdapter extends RecyclerView.Adapter<Custom
         holder.timeView.setText(unixToDateTime(obj.unix*1000L));
         holder.rsvpView.setText(obj.yes_rsvp + " going");
         holder.rsvpLimitView.setText(obj.rsvp_limit!=0 ? obj.rsvp_limit+" slots" : "Unlimited");
+        holder.statusView.setText(obj.status);
+        holder.details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cmrListener.onDetailClick(obj);
+            }
+        });
     }
     private String unixToDateTime(long unix){
         Date df = new java.util.Date(unix);

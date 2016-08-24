@@ -6,8 +6,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="official_meetup">Official Meetup</string>
-    <string name="custom_schedule">Public Meetup</string>
+    <string name="official_meetup">Meetup events</string>
+    <string name="custom_schedule">Gameroom</string>
     <string name="news">News Feed</string>
     <string name="favourite">Favourite</string>
     <string name="history">Browse History</string>
@@ -30,7 +30,7 @@
     <string name="no_acc">I don\'t have an account</string>
     <string name="register">Register</string>
     <string name="register_preset">Almost done!</string>
-    <string name="your_activity">Your Activity</string>
+    <string name="your_activity">My Activity</string>
     <string name="logout">Log out</string>
     <string name="basic_info">Basic information</string>
     <string name="title">Title:</string>
@@ -43,4 +43,17 @@
     <string name="confirm">Confirm</string>
     <string name="slot_limit">Slot:</string>
     <string name="you_must_log_in_first">You must login first</string>
+    <string name="status">Status:</string>
+    <string name="calendar_view">Calendar View</string>
+    <string name="loading">Loading</string>
+    <string name="no_desc">No description provided</string>
+    <string name="chekout_on_meetup">Checkout on meetup</string>
+    <string name="current_status">Current Status</string>
+    <string name="pending">Pending approval</string>
+    <string name="approved">Approved</string>
+    <string name="cancelled">Room cancelled</string>
+    <string name="join">Join</string>
+    <string name="join_desc">the event</string>
+    <string name="save">Save</string>
+    <string name="save_desc">into favourite</string>
 </resources>

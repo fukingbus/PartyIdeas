@@ -8,12 +8,16 @@
             android:title="@string/news" />
         <item
             android:id="@+id/nav_offical_meetup"
-            android:icon="@mipmap/ic_calendar"
+            android:icon="@mipmap/meetup"
             android:title="@string/official_meetup" />
         <item
             android:id="@+id/nav_cust_schedule"
             android:icon="@mipmap/ic_plan"
             android:title="@string/custom_schedule" />
+        <item
+            android:id="@+id/nav_calendar"
+            android:icon="@mipmap/ic_calendar"
+            android:title="@string/calendar_view" />
 
     </group>
 

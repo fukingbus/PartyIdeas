@@ -26,11 +26,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Details"
+            android:text="@string/chekout_on_meetup"
             android:padding="8dp"
             android:background="@color/colorPrimaryDark"
             android:textColor="@color/material_grey_50"
-            android:gravity="center" />
+            android:gravity="center"
+            android:id="@+id/checkmeetup"
+            android:clickable="true"/>
         <View
             android:layout_width="fill_parent"
             android:layout_height="0.5dp"

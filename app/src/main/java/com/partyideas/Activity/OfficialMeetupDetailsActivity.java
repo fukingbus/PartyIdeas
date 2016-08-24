@@ -1,7 +1,10 @@
 package com.partyideas.Activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
 
@@ -49,6 +52,13 @@ public class OfficialMeetupDetailsActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.rsvp)).setText(eventObj.yes_rsvp + " going");
         ((TextView)findViewById(R.id.avaspot)).setText(eventObj.rsvp_limit!=0 ? eventObj.rsvp_limit+" slots" : "Unlimited");
         ((TextView)findViewById(R.id.address)).setText(eventObj.venueAddress);
+        ((TextView)findViewById(R.id.checkmeetup)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(eventObj.link));
+                startActivity(browserIntent);
+            }
+        });
         String html = "<html><head><style>img{display: inline; height: auto; max-width: 90%;}</style></head><body>"+eventObj.desc+"</body></html>";
         ((WebView)findViewById(R.id.webView)).loadData(html, "text/html; charset=UTF-8", null);
     }

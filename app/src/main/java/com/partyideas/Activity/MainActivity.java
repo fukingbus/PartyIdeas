@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransact(cmFrag);
                 setTitle(item.getTitle());
                 break;
+            case R.id.nav_calendar:
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -2,6 +2,7 @@ package com.partyideas.Fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,7 +18,9 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.partyideas.Activity.GameRoomDetailsActivity;
 import com.partyideas.Activity.MainActivity;
+import com.partyideas.Adapter.CMRecyclerViewListener;
 import com.partyideas.Adapter.CustomEventResponseObject;
 import com.partyideas.Adapter.CustomMeetupRecyclerViewAdapter;
 import com.partyideas.R;
@@ -30,7 +33,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CustomMeetupFrag extends Fragment {
+public class CustomMeetupFrag extends Fragment implements CMRecyclerViewListener {
     private String BASE_API_SERVER;
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
@@ -49,7 +52,7 @@ public class CustomMeetupFrag extends Fragment {
         View root = inflater.inflate(R.layout.fragment_custom_meetup, container, false);
         recyclerView = (RecyclerView)root.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(mLayoutManager);
-        adapter = new CustomMeetupRecyclerViewAdapter(dataset);
+        adapter = new CustomMeetupRecyclerViewAdapter(dataset,this);
         recyclerView.setAdapter(adapter);
         fab = (FloatingActionButton)root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +96,7 @@ public class CustomMeetupFrag extends Fragment {
                                         cero.duration = item.getLong("length");
                                         cero.desc = item.getString("description");
                                         cero.status = item.getString("status");
+                                        cero.venueID = item.getInt("idLocation");
                                         dataset.add(cero);
 
                                     }
@@ -107,4 +111,11 @@ public class CustomMeetupFrag extends Fragment {
                 });
     }
 
+    @Override
+    public void onDetailClick(CustomEventResponseObject obj) {
+        Intent intent = new Intent();
+        intent.setClass(getContext(),GameRoomDetailsActivity.class);
+        intent.putExtra("data",obj);
+        getActivity().startActivity(intent);
+    }
 }

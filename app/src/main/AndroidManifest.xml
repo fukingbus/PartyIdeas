@@ -18,10 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.OfficialMeetupDetailsActivity"></activity>
+        <activity android:name=".Activity.OfficialMeetupDetailsActivity" />
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyDsius1KAOT-2RiWX3MPIPabZamqyVsXHs" />
+
+        <activity android:name=".Activity.GameRoomDetailsActivity"></activity>
     </application>
 
 </manifest>

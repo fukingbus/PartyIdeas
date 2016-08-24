@@ -93,7 +93,28 @@
                 android:padding="8dp" />
         </LinearLayout>
 
-        <View
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/status"
+                    android:id="@+id/textView20"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/statusTxt"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <View
             android:layout_width="fill_parent"
             android:layout_height="0.5dp"
             android:background="#000000" />
