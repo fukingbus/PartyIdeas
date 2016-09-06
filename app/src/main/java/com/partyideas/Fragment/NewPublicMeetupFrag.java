@@ -23,6 +23,7 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.partyideas.Activity.MainActivity;
+import com.partyideas.Adapter.GameObject;
 import com.partyideas.Adapter.LocationObject;
 import com.partyideas.R;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -50,6 +51,7 @@ public class NewPublicMeetupFrag extends Fragment implements View.OnClickListene
     TextView timeText;
     Calendar eventDate;
     Spinner locSpinner;
+    Spinner gameSpinner;
     TextView addressView;
     TextView seekBarDurationView;
     SeekBar durationSeekBar;
@@ -60,8 +62,17 @@ public class NewPublicMeetupFrag extends Fragment implements View.OnClickListene
 
     ArrayList<String> locList = new ArrayList<>();
     ArrayList<LocationObject> locData = new ArrayList<>();
+
+    ArrayList<String> gameList = new ArrayList<>();
+    ArrayList<GameObject> gameData = new ArrayList<>();
+
+    ArrayList<String> gameJson = new ArrayList<>();
+
     int selectedLocation = 0;
+    int selectedGame = 0;
+
     ArrayAdapter<String> dataAdapter;
+    ArrayAdapter<String> gameDataAdapter;
 
     public NewPublicMeetupFrag() {
         // Required empty public constructor
@@ -86,6 +97,7 @@ public class NewPublicMeetupFrag extends Fragment implements View.OnClickListene
         slotSeekBar = (SeekBar) root.findViewById(R.id.slotSeekBar);
         slotText = (TextView) root.findViewById(R.id.slotText);
         confirmButton = (Button)root.findViewById(R.id.confirm);
+        gameSpinner = (Spinner)root.findViewById(R.id.gameSpinner);
         slotSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -123,7 +135,6 @@ public class NewPublicMeetupFrag extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 if(     eventTitle.getText().length()>2 &&
-                        eventDesc.getText().length() > 8 &&
                         System.currentTimeMillis() < eventDate.getTimeInMillis()
                   )
                 postEvent();
@@ -133,7 +144,12 @@ public class NewPublicMeetupFrag extends Fragment implements View.OnClickListene
         });
         dataAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_item, locList);
+
+        gameDataAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, gameList);
         locSpinner.setAdapter(dataAdapter);
+        gameSpinner.setAdapter(gameDataAdapter);
+
         locSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -147,11 +163,24 @@ public class NewPublicMeetupFrag extends Fragment implements View.OnClickListene
             }
 
         });
+        gameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedGame = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         locSpinner.setEnabled(false);
+        gameSpinner.setEnabled(false);
         dateText.setOnClickListener(this);
         timeText.setOnClickListener(this);
         eventDate = Calendar.getInstance();
         getLocation();
+        getGame();
         return root;
 }
     private void postEvent(){
@@ -163,6 +192,7 @@ public class NewPublicMeetupFrag extends Fragment implements View.OnClickListene
         json.addProperty("unix",eventDate.getTimeInMillis()/1000);
         json.addProperty("duration",Integer.parseInt(seekBarDurationView.getText().toString()) * 3600000);
         json.addProperty("idLoc",locData.get(selectedLocation).id);
+        json.addProperty("game",gameJson.get(selectedGame));
         json.addProperty("desc",eventDesc.getText().toString());
         Ion.with(getContext())
                 .load(BASE_API_SERVER+"/api/room")
@@ -221,6 +251,45 @@ public class NewPublicMeetupFrag extends Fragment implements View.OnClickListene
                                 }
                                 dataAdapter.notifyDataSetChanged();
                                 locSpinner.setEnabled(true);
+                            }
+                            catch (Exception ex){
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+                });
+    }
+    private void getGame(){
+        Ion.with(getContext())
+                .load(BASE_API_SERVER+"/api/game")
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        if(e!= null)
+                            e.printStackTrace();
+                        else {
+                            try {
+                                JSONObject obj = new JSONObject(result.toString());
+                                if(obj.getBoolean("status")){
+                                    int length = obj.getInt("size");
+                                    JSONArray data = obj.getJSONArray("data");
+                                    for (int i=0;i<length;i++){
+                                        JSONObject ApiGameObj = data.getJSONObject(i);
+                                        GameObject gameObj = new GameObject();
+                                        gameObj.name = ApiGameObj.getString("name");
+                                        gameObj.desc = ApiGameObj.getString("description");
+                                        gameObj.id = ApiGameObj.getString("id");
+                                        gameObj.imgsrc = ApiGameObj.getString("imgsrc");
+
+                                        gameJson.add(ApiGameObj.toString());
+
+                                        gameList.add(ApiGameObj.getString("name"));
+                                        gameData.add(gameObj);
+                                    }
+                                }
+                                gameDataAdapter.notifyDataSetChanged();
+                                gameSpinner.setEnabled(true);
                             }
                             catch (Exception ex){
                                 ex.printStackTrace();

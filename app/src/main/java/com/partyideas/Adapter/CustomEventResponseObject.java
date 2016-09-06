@@ -19,4 +19,5 @@ public class CustomEventResponseObject implements Serializable {
     public double venueLon;
     public int venueID;
     public String desc;
+    public String gameJson;
 }

@@ -1,13 +1,18 @@
 package com.partyideas.Adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.koushikdutta.ion.Ion;
 import com.partyideas.R;
 
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
@@ -26,19 +31,17 @@ public class CustomMeetupRecyclerViewAdapter extends RecyclerView.Adapter<Custom
         // each data item is just a string in this case
         public TextView titleView;
         public TextView timeView;
-        public TextView rsvpView;
-        public TextView rsvpLimitView;
-        public TextView details;
-        public TextView statusView;
+        public TextView slotView;
+        public LinearLayout root;
+        public ImageView gameImg;
 
         public ViewHolder(View v) {
             super(v);
             titleView = (TextView) v.findViewById(R.id.eventTitle);
-            timeView = (TextView)v.findViewById(R.id.timeSlot);
-            rsvpView = (TextView)v.findViewById(R.id.rsvp);
-            rsvpLimitView = (TextView)v.findViewById(R.id.avaspot);
-            details = (TextView)v.findViewById(R.id.details);
-            statusView = (TextView)v.findViewById(R.id.statusTxt);
+            timeView = (TextView)v.findViewById(R.id.eventTime);
+            slotView = (TextView)v.findViewById(R.id.eventSlot);
+            root = (LinearLayout) v.findViewById(R.id.root);
+            gameImg = (ImageView) v.findViewById(R.id.gameImg);
         }
     }
 
@@ -58,17 +61,25 @@ public class CustomMeetupRecyclerViewAdapter extends RecyclerView.Adapter<Custom
     @Override
     public void onBindViewHolder(CustomMeetupRecyclerViewAdapter.ViewHolder holder, int position) {
         final CustomEventResponseObject obj = dataset.get(position);
-        holder.titleView.setText(obj.name);
-        holder.timeView.setText(unixToDateTime(obj.unix*1000L));
-        holder.rsvpView.setText(obj.yes_rsvp + " going");
-        holder.rsvpLimitView.setText(obj.rsvp_limit!=0 ? obj.rsvp_limit+" slots" : "Unlimited");
-        holder.statusView.setText(obj.status);
-        holder.details.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cmrListener.onDetailClick(obj);
-            }
-        });
+        try {
+            holder.titleView.setText(obj.name);
+            holder.timeView.setText(unixToDateTime(obj.unix * 1000L));
+            holder.slotView.setText(obj.yes_rsvp + "/" + obj.rsvp_limit + " going");
+            String imgsrc = new JSONObject(obj.gameJson).getString("imgsrc");
+            imgsrc = imgsrc.replaceFirst("^(https://)|^(http://)?(www\\.)?", "");
+            Ion.with(holder.gameImg)
+                    .placeholder(R.mipmap.ic_picture)
+                    .load("http://images.weserv.nl/?url="+imgsrc+"&w=240&h=240&t=square&a=center");
+            holder.root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cmrListener.onDetailClick(obj);
+                }
+            });
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
     private String unixToDateTime(long unix){
         Date df = new java.util.Date(unix);

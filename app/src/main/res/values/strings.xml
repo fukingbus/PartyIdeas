@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Party Ideas</string>
-    <string name="base_api_server">http://59.148.150.237:3000</string>
+    <string name="base_api_server">http://dev.bu5hit.xyz:3000</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -56,4 +56,8 @@
     <string name="join_desc">the event</string>
     <string name="save">Save</string>
     <string name="save_desc">into favourite</string>
+    <string name="game">Game:</string>
+    <string name="shop">Shop</string>
+    <string name="confirm_order">Confirm Order</string>
+    <string name="signed_in_as">Signed in as:</string>
 </resources>

@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -42,6 +44,7 @@ public class GameRoomDetailsActivity extends AppCompatActivity implements View.O
     TextView desc;
     TextView status;
     CardView joincard;
+    TextView slotTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +63,11 @@ public class GameRoomDetailsActivity extends AppCompatActivity implements View.O
         members = (TextView)findViewById(R.id.members);
         desc = (TextView)findViewById(R.id.desc);
         status = (TextView)findViewById(R.id.statusTxt);
+        slotTxt = (TextView)findViewById(R.id.slotTxt);
         joincard = (CardView) findViewById(R.id.joincard) ;
         joinField = (LinearLayout)findViewById(R.id.joinfield);
         saveField = (LinearLayout)findViewById(R.id.savefield);
+
         joinField.setOnClickListener(this);
         saveField.setOnClickListener(this);
         setTitle(CMObject.name);
@@ -70,8 +75,18 @@ public class GameRoomDetailsActivity extends AppCompatActivity implements View.O
         duration.setText(getDuration(CMObject.duration));
         desc.setText(CMObject.desc.isEmpty() ? getResources().getString(R.string.no_desc) : CMObject.desc);
         setStatusText(CMObject.status);
+        setSlotText();
 
         getLocation();
+        getMember();
+    }
+    private void setSlotText(){
+        if(CMObject.yes_rsvp != CMObject.rsvp_limit){
+            slotTxt.setText(CMObject.yes_rsvp + "/" + CMObject.rsvp_limit + " joined");
+        }
+        else{
+            slotTxt.setText("FULL");
+        }
     }
     private void setStatusText(String str){
         switch (str){
@@ -110,6 +125,34 @@ public class GameRoomDetailsActivity extends AppCompatActivity implements View.O
                     }
                 });
     }
+    private void getMember(){
+        Ion.with(getApplicationContext())
+                .load(BASE_API_SERVER+"/api/room/member/"+CMObject.eventID)
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        boolean status = result.get("status").getAsBoolean();
+                        if(status) {
+                            int size = result.get("size").getAsInt();
+                            JsonArray arr = result.get("data").getAsJsonArray();
+                            for (int i = 0; i < size;i++){
+                                JsonElement element = arr.get(i);
+                                String id = element.getAsJsonObject().get("id").getAsString();
+                                String name = element.getAsJsonObject().get("username").getAsString();
+                                String email = element.getAsJsonObject().get("email").getAsString();
+                                if(i==0){
+                                    members.setText(name+" ("+size+" going)");
+                                }
+                            }
+                        }
+                        else{
+                            String msg = result.get("err").getAsJsonObject().get("msg").getAsString();
+                            Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
     private String unixToDateTime(long unix){
         Date df = new java.util.Date(unix);
         return new SimpleDateFormat("MM, dd, yyyy hh:mm a").format(df);
@@ -137,8 +180,39 @@ public class GameRoomDetailsActivity extends AppCompatActivity implements View.O
             case R.id.joinfield:
                 SharedPreferences spf = getSharedPreferences("account",MODE_PRIVATE);
                 if(spf.getBoolean("status",false)){
-                    final ProgressDialog pdialog = ProgressDialog.show(getApplicationContext(),"Processing","Occupying the seat for you",true);
+                    final ProgressDialog pdialog = ProgressDialog.show(this,"Processing","Occupying the seat for you",true);
+                    String username = spf.getString("username","FOO");
+                    String pass = spf.getString("token","BAR");
+                    JsonObject jobj = new JsonObject();
+                    jobj.addProperty("username", username);
+                    jobj.addProperty("token",pass);
+                    Ion.with(getApplicationContext())
+                            .load(BASE_API_SERVER+"/api/room/join/"+CMObject.eventID)
+                            .setJsonObjectBody(jobj)
+                            .asJsonObject()
+                            .setCallback(new FutureCallback<JsonObject>() {
+                                @Override
+                                public void onCompleted(Exception e, JsonObject result) {
+                                    pdialog.dismiss();
+                                    try {
+                                        JSONObject res = new JSONObject(result.toString());
+                                        boolean status = res.getBoolean("status");
+                                        if(status){
+                                            pdialog.dismiss();
+                                            Toast.makeText(getApplicationContext(),CMObject.name + " join successful",Toast.LENGTH_SHORT).show();
+                                        }
+                                        else{
+                                            JSONObject err = res.getJSONObject("err");
+                                            Toast.makeText(getApplicationContext(),err.getString("msg"),Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    catch (Exception ex){
+                                        ex.printStackTrace();
+                                        Toast.makeText(getApplicationContext(),"Network error",Toast.LENGTH_SHORT).show();
+                                    }
 
+                                }
+                            });
                 }
                 else {
                     Toast.makeText(getApplicationContext(),getResources().getString(R.string.you_must_log_in_first),Toast.LENGTH_SHORT).show();

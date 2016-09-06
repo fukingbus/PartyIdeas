@@ -33,4 +33,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:9.0.0'
     compile 'com.google.android.gms:play-services-maps:9.0.0'
     compile 'com.wdullaer:materialdatetimepicker:2.4.0'
+    compile 'com.github.nirhart:parallaxscroll:1.0'
 }

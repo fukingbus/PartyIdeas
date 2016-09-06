@@ -23,6 +23,7 @@ import com.partyideas.Fragment.NewPublicMeetupFrag;
 import com.partyideas.Fragment.NewsFrag;
 import com.partyideas.Fragment.OfficialMeetupFrag;
 import com.partyideas.Fragment.RegisterFrag;
+import com.partyideas.Fragment.ShopFragment;
 import com.partyideas.R;
 
 public class MainActivity extends AppCompatActivity
@@ -110,6 +111,11 @@ public class MainActivity extends AppCompatActivity
                 setTitle(item.getTitle());
                 break;
             case R.id.nav_calendar:
+                break;
+            case R.id.nav_shop:
+                ShopFragment shopFrag = new ShopFragment();
+                fragmentTransact(shopFrag);
+                setTitle(item.getTitle());
                 break;
         }
 

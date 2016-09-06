@@ -51,7 +51,6 @@ public class CustomMeetupFrag extends Fragment implements CMRecyclerViewListener
         BASE_API_SERVER  = getResources().getString(R.string.base_api_server);
         View root = inflater.inflate(R.layout.fragment_custom_meetup, container, false);
         recyclerView = (RecyclerView)root.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(mLayoutManager);
         adapter = new CustomMeetupRecyclerViewAdapter(dataset,this);
         recyclerView.setAdapter(adapter);
         fab = (FloatingActionButton)root.findViewById(R.id.fab);
@@ -89,6 +88,7 @@ public class CustomMeetupFrag extends Fragment implements CMRecyclerViewListener
                                     for (int i=0;i<data.length();i++){
                                         JSONObject item = data.getJSONObject(i);
                                         CustomEventResponseObject cero = new CustomEventResponseObject();
+                                        cero.eventID = item.getString("id");
                                         cero.name = item.getString("name");
                                         cero.yes_rsvp = item.getInt("rsvp_yes");
                                         cero.rsvp_limit = item.getInt("rsvp_limit");
@@ -97,6 +97,7 @@ public class CustomMeetupFrag extends Fragment implements CMRecyclerViewListener
                                         cero.desc = item.getString("description");
                                         cero.status = item.getString("status");
                                         cero.venueID = item.getInt("idLocation");
+                                        cero.gameJson = item.getString("game");
                                         dataset.add(cero);
 
                                     }
@@ -110,6 +111,7 @@ public class CustomMeetupFrag extends Fragment implements CMRecyclerViewListener
                     }
                 });
     }
+
 
     @Override
     public void onDetailClick(CustomEventResponseObject obj) {
